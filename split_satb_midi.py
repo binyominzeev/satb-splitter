@@ -218,8 +218,8 @@ def export_midi(
 
 
 def _get_initial_tempo(midi: pretty_midi.PrettyMIDI) -> float:
-    tempos = midi.get_tempo_changes()
-    return float(tempos[1][0]) if len(tempos[1]) > 0 else 120.0
+    times, tempos = midi.get_tempo_changes()
+    return float(tempos[0]) if len(tempos) > 0 else 120.0
 
 
 # ---------------------------------------------------------------------------
@@ -231,11 +231,14 @@ def split_midi(input_path: str, output_path: str) -> None:
 
     all_notes: list[Note] = []
     original_program = 52  # choir aahs default
+    program_set = False
 
     for instrument in midi.instruments:
         if instrument.is_drum:
             continue
-        original_program = instrument.program
+        if not program_set:
+            original_program = instrument.program
+            program_set = True
         all_notes.extend(extract_notes(instrument))
 
     if not all_notes:

@@ -8,7 +8,7 @@ content into independent monophonic voice tracks.
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.9+
 - [pretty_midi](https://github.com/craffel/pretty-midi)
 
 ```
